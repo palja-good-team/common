@@ -31,12 +31,8 @@ publishing {
     }
 }
 
-tasks.named('bootJar') {
-    enabled = false
-}
-
-tasks.named('jar') {
-    enabled = true
+tasks.named('test') {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -44,4 +40,6 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:5.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.42'
     annotationProcessor 'org.projectlombok:lombok:1.18.42'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
