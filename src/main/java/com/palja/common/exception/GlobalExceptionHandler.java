@@ -1,4 +1,4 @@
-package com.palja.exception;
+package com.palja.common.exception;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.palja.response.ApiResponse;
+import com.palja.common.response.ApiResponse;
 
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;

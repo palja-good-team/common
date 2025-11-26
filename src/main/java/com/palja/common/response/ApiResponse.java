@@ -1,7 +1,7 @@
-package com.palja.response;
+package com.palja.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.palja.exception.ErrorCode;
+import com.palja.common.exception.ErrorCode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ApiResponse<T>(

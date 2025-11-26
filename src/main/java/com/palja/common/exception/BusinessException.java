@@ -1,4 +1,4 @@
-package com.palja.exception;
+package com.palja.common.exception;
 
 import lombok.Getter;
 
