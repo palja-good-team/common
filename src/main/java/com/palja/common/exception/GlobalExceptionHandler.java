@@ -25,10 +25,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<ApiResponse<Void>> handleBusinessException(BusinessException e) {
 		log.error("BusinessException: {}", e.getMessage());
-		ErrorCode errorCode = e.getErrorCode();
+		CommonErrorCode errorCode = e.getErrorCode();
 
 		return ResponseEntity
-			.status(errorCode.getStatus())
+			.status(errorCode.getHttpStatus())
 			.body(ApiResponse.error(errorCode));
 	}
 
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 
 		return ResponseEntity
 			.badRequest()
-			.body(ApiResponse.error(ErrorCode.INVALID_INPUT_VALUE, errors.toString()));
+			.body(ApiResponse.error(CommonErrorCode.INVALID_INPUT_VALUE, errors.toString()));
 	}
 
 	/**
@@ -57,8 +57,8 @@ public class GlobalExceptionHandler {
 		log.warn("DomainException: {}", e.getMessage());
 
 		return ResponseEntity
-			.status(ErrorCode.DOMAIN_ERROR.getStatus())
-			.body(ApiResponse.error(ErrorCode.DOMAIN_ERROR, e.getMessage()));
+			.status(CommonErrorCode.DOMAIN_ERROR.getHttpStatus())
+			.body(ApiResponse.error(CommonErrorCode.DOMAIN_ERROR, e.getMessage()));
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 		log.warn("JSON parse error: {}", e.getMessage());
 		return ResponseEntity
 			.badRequest()
-			.body(ApiResponse.error(ErrorCode.INVALID_INPUT_VALUE, "형식을 확인해주세요."));
+			.body(ApiResponse.error(CommonErrorCode.INVALID_INPUT_VALUE, "형식을 확인해주세요."));
 	}
 
 	/**
@@ -80,12 +80,12 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<?>> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
 		if ("X-User-Role".equalsIgnoreCase(e.getName())) {
 			return ResponseEntity
-				.status(ErrorCode.INVALID_HEADER_USER_ROLE.getStatus())
-				.body(ApiResponse.error(ErrorCode.INVALID_HEADER_USER_ROLE, "value=" + e.getValue()));
+				.status(CommonErrorCode.INVALID_HEADER_USER_ROLE.getHttpStatus())
+				.body(ApiResponse.error(CommonErrorCode.INVALID_HEADER_USER_ROLE, "value=" + e.getValue()));
 		}
 		return ResponseEntity
 			.badRequest()
-			.body(ApiResponse.error(ErrorCode.BAD_REQUEST, e.getMessage()));
+			.body(ApiResponse.error(CommonErrorCode.BAD_REQUEST, e.getMessage()));
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class GlobalExceptionHandler {
 
 		return ResponseEntity
 			.status(status)
-			.body(ApiResponse.error(ErrorCode.FEIGN_ERROR, e.getMessage()));
+			.body(ApiResponse.error(CommonErrorCode.FEIGN_ERROR, e.getMessage()));
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class GlobalExceptionHandler {
 
 		return ResponseEntity
 			.internalServerError()
-			.body(ApiResponse.error(ErrorCode.INTERNAL_SERVER_ERROR));
+			.body(ApiResponse.error(CommonErrorCode.INTERNAL_SERVER_ERROR));
 	}
 
 }
