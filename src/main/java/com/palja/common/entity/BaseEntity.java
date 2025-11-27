@@ -30,7 +30,7 @@ public class BaseEntity {
 	@Column(name = "updated_by")
 	private Long updatedBy;
 
-	@Column(name = "deleted_by")
+	@Column(name = "deleted_at")
 	private Instant deletedAt;
 
 	@Column(name = "deleted_by")
