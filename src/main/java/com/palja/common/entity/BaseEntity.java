@@ -1,0 +1,48 @@
+package com.palja.common.entity;
+
+import java.time.Instant;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+
+@Getter
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+public class BaseEntity {
+
+	@CreatedDate
+	@Column(name = "created_at", updatable = false)
+	private Instant createdAt;
+
+	@Column(name = "created_by", updatable = false)
+	private Long createdBy;
+
+	@LastModifiedDate
+	@Column(name = "updated_at")
+	private Instant updatedAt;
+
+	@Column(name = "updated_by")
+	private Long updatedBy;
+
+	@Column(name = "deleted_by")
+	private Instant deletedAt;
+
+	@Column(name = "deleted_by")
+	private Long deletedBy;
+
+	public void softDelete(Long userId) {
+		this.deletedAt = Instant.now();
+		this.deletedBy = userId;
+	}
+
+	public boolean isDeleted() {
+		return this.deletedAt != null;
+	}
+
+}
