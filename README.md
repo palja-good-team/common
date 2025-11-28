@@ -31,3 +31,10 @@
 <br/>
 
 4. `.gitignore`에 gradle.properties가 포함되어 있는지 확인
+
+<br/>
+
+5. @SpringBootApplication이 붙은 클래스에 @ComponentScan 추가 <br/><br/>
+    ```
+    @ComponentScan(basePackages = {"...", "com.palja.common"})
+    ```
