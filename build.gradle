@@ -22,10 +22,10 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri(System.getenv("PACKAGES_URL"))
+            url = uri(System.getenv("PACKAGES_URL") ?: findProperty("PACKAGES_URL"))
             credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
+                username = System.getenv("USERNAME") ?: findProperty("USERNAME")
+                password = System.getenv("TOKEN") ?: findProperty("TOKEN")
             }
         }
     }
