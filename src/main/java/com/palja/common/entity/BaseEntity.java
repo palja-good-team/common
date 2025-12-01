@@ -2,9 +2,7 @@ package com.palja.common.entity;
 
 import java.time.Instant;
 
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,6 +11,8 @@ import com.palja.common.auditor.AuditorContext;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 
 @Getter
@@ -24,7 +24,6 @@ public class BaseEntity {
 	@Column(name = "created_at", updatable = false)
 	private Instant createdAt;
 
-	@CreatedBy
 	@Column(name = "created_by", updatable = false)
 	private String createdBy;
 
@@ -32,7 +31,6 @@ public class BaseEntity {
 	@Column(name = "updated_at")
 	private Instant updatedAt;
 
-	@LastModifiedBy
 	@Column(name = "updated_by")
 	private String updatedBy;
 
@@ -41,6 +39,16 @@ public class BaseEntity {
 
 	@Column(name = "deleted_by")
 	private String deletedBy;
+
+	@PrePersist
+	public void prePersist() {
+		this.createdBy = AuditorContext.get().getLoginId();
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		this.updatedBy = AuditorContext.get().getLoginId();
+	}
 
 	public void softDelete() {
 		this.deletedAt = Instant.now();
