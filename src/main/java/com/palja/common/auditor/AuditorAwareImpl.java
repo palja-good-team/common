@@ -10,6 +10,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 
 	@Override
 	public Optional<String> getCurrentAuditor() {
+		System.out.println("Auditor를 설정합니다.");
 		return Optional.ofNullable(AuditorContext.get());
 	}
 
