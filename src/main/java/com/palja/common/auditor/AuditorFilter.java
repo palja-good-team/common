@@ -18,13 +18,11 @@ public class AuditorFilter extends OncePerRequestFilter {
 		HttpServletRequest request, HttpServletResponse response, FilterChain filterChain
 	) throws ServletException, IOException {
 		try {
-			String loginId = request.getHeader("X-USER-LOGIN-ID");
-			AuditorContext.set(loginId);
+			AuditorContext.set(request.getHeader("X-USER-LOGIN-ID"), request.getHeader("X-USER-ROLE"));
 			filterChain.doFilter(request, response);
 		} finally {
 			AuditorContext.clear();
 		}
-
 	}
 
 }

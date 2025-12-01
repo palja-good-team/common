@@ -6,11 +6,10 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuditorAwareImpl implements AuditorAware<String> {
+public class AuditorAwareImpl implements AuditorAware<LoginUserInfo> {
 
 	@Override
-	public Optional<String> getCurrentAuditor() {
-		System.out.println("Auditor를 설정합니다.");
+	public Optional<LoginUserInfo> getCurrentAuditor() {
 		return Optional.ofNullable(AuditorContext.get());
 	}
 
