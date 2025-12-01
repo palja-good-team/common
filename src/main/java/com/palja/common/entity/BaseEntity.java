@@ -24,25 +24,26 @@ public class BaseEntity {
 	@Column(name = "created_at", updatable = false)
 	private Instant createdAt;
 
-	@Column(name = "created_by", updatable = false)
+	@Column(name = "created_by", length = 10, updatable = false)
 	private String createdBy;
 
 	@LastModifiedDate
 	@Column(name = "updated_at")
 	private Instant updatedAt;
 
-	@Column(name = "updated_by")
+	@Column(name = "updated_by", length = 10)
 	private String updatedBy;
 
 	@Column(name = "deleted_at")
 	private Instant deletedAt;
 
-	@Column(name = "deleted_by")
+	@Column(name = "deleted_by", length = 10)
 	private String deletedBy;
 
 	@PrePersist
 	public void prePersist() {
 		this.createdBy = AuditorContext.get().getLoginId();
+		this.updatedBy = AuditorContext.get().getLoginId();
 	}
 
 	@PreUpdate
