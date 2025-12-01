@@ -1,7 +1,7 @@
 package com.palja.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.palja.common.exception.CommonErrorCode;
+import com.palja.common.exception.ErrorCode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ApiResponse<T>(
@@ -22,12 +22,12 @@ public record ApiResponse<T>(
 	}
 
 	/** 실패 응답 생성 (에러 코드 + 에러 메시지) */
-	public static <T> ApiResponse<T> error(CommonErrorCode errorCode) {
+	public static <T> ApiResponse<T> error(ErrorCode errorCode) {
 		return new ApiResponse<>(false, errorCode.getHttpStatus().name(), errorCode.getMessage(), null);
 	}
 
 	/** 실패 응답 생성 (에러 메시지 + 메시지) */
-	public static <T> ApiResponse<T> error(CommonErrorCode errorCode, String message) {
+	public static <T> ApiResponse<T> error(ErrorCode errorCode, String message) {
 		return new ApiResponse<>(false, errorCode.getHttpStatus().name(), errorCode.getMessage() + " (" + message + ")", null);
 	}
 

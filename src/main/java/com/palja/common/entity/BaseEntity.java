@@ -21,24 +21,24 @@ public class BaseEntity {
 	private Instant createdAt;
 
 	@Column(name = "created_by", updatable = false)
-	private Long createdBy;
+	private String createdBy;
 
 	@LastModifiedDate
 	@Column(name = "updated_at")
 	private Instant updatedAt;
 
 	@Column(name = "updated_by")
-	private Long updatedBy;
+	private String updatedBy;
 
 	@Column(name = "deleted_at")
 	private Instant deletedAt;
 
 	@Column(name = "deleted_by")
-	private Long deletedBy;
+	private String deletedBy;
 
-	public void softDelete(Long userId) {
+	public void softDelete(String loginId) {
 		this.deletedAt = Instant.now();
-		this.deletedBy = userId;
+		this.deletedBy = loginId;
 	}
 
 	public boolean isDeleted() {
