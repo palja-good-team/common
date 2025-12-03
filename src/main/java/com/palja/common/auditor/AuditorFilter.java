@@ -20,7 +20,6 @@ public class AuditorFilter extends OncePerRequestFilter {
 	private final Map<String, List<String>> permitAllPaths = Map.of(
 		"/api/v1/auth/login", List.of("POST"),
 		"/api/v1/auth/refresh", List.of("POST"),
-		"/api/v1/managers", List.of("POST"),
 		"/api/v1/customers", List.of("POST"),
 		"/api/v1/company-users", List.of("POST")
 	);
@@ -33,12 +32,17 @@ public class AuditorFilter extends OncePerRequestFilter {
 			String path = request.getServletPath();
 			String method = request.getMethod();
 
-			if (permitAllPaths.containsKey(path) && permitAllPaths.get(path).contains(method)) {
-				filterChain.doFilter(request, response);
-				return;
+			String loginId = request.getHeader("X-USER-LOGIN-ID");
+			String role = request.getHeader("X-USER-ROLE");
+
+			if (loginId == null || role == null) {
+				if (permitAllPaths.containsKey(path) && permitAllPaths.get(path).contains(method)) {
+					filterChain.doFilter(request, response);
+					return;
+				}
 			}
 
-			AuditorContext.set(request.getHeader("X-USER-LOGIN-ID"), UserRole.valueOf(request.getHeader("X-USER-ROLE")));
+			AuditorContext.set(loginId, UserRole.valueOf(role));
 			filterChain.doFilter(request, response);
 		} finally {
 			AuditorContext.clear();
