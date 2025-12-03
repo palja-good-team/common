@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.palja.common.annotation.RequiredAnonymous;
 import com.palja.common.annotation.RequiredRole;
 import com.palja.common.auditor.AuditorContext;
+import com.palja.common.auditor.LoginUserInfo;
 import com.palja.common.exception.BusinessException;
 import com.palja.common.exception.CommonErrorCode;
 import com.palja.common.vo.UserRole;
@@ -28,9 +29,9 @@ public class RoleAspect {
 
 	@Before("@annotation(requiredAnonymous)")
 	public void requiredAnonymous(RequiredAnonymous requiredAnonymous) {
-		UserRole role = AuditorContext.get().getRole();
+		LoginUserInfo loginUserInfo = AuditorContext.get();
 
-		if (role != null) {
+		if (loginUserInfo != null) {
 			throw new BusinessException(CommonErrorCode.FORBIDDEN);
 		}
 	}
