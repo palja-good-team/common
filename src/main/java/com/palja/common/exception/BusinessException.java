@@ -1,5 +1,7 @@
 package com.palja.common.exception;
 
+import com.palja.common.auditor.CurrentUser;
+
 import lombok.Getter;
 
 @Getter
