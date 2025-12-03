@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.palja.common.auditor.AuditorContext;
+import com.palja.common.auditor.CurrentUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -42,18 +43,18 @@ public class BaseEntity {
 
 	@PrePersist
 	public void prePersist() {
-		this.createdBy = AuditorContext.get().getLoginId();
-		this.updatedBy = AuditorContext.get().getLoginId();
+		this.createdBy = CurrentUser.getLoginId();
+		this.updatedBy = CurrentUser.getLoginId();
 	}
 
 	@PreUpdate
 	public void preUpdate() {
-		this.updatedBy = AuditorContext.get().getLoginId();
+		this.updatedBy = CurrentUser.getLoginId();
 	}
 
 	public void softDelete() {
 		this.deletedAt = Instant.now();
-		this.deletedBy = AuditorContext.get().getLoginId();
+		this.deletedBy = CurrentUser.getLoginId();
 	}
 
 	public boolean isDeleted() {

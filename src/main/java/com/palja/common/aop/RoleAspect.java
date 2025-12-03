@@ -11,6 +11,7 @@ import com.palja.common.annotation.RequiredRole;
 import com.palja.common.auditor.AuditorContext;
 import com.palja.common.exception.BusinessException;
 import com.palja.common.exception.CommonErrorCode;
+import com.palja.common.vo.UserRole;
 
 @Aspect
 @Component
@@ -18,7 +19,7 @@ public class RoleAspect {
 
 	@Before("@annotation(requiredRole)")
 	public void requiredRole(RequiredRole requiredRole) {
-		String role = AuditorContext.get().getRole();
+		UserRole role = AuditorContext.get().getRole();
 
 		if (!Arrays.asList(requiredRole.value()).contains(role)) {
 			throw new BusinessException(CommonErrorCode.FORBIDDEN);
@@ -27,7 +28,7 @@ public class RoleAspect {
 
 	@Before("@annotation(requiredAnonymous)")
 	public void requiredAnonymous(RequiredAnonymous requiredAnonymous) {
-		String role = AuditorContext.get().getRole();
+		UserRole role = AuditorContext.get().getRole();
 
 		if (role != null) {
 			throw new BusinessException(CommonErrorCode.FORBIDDEN);

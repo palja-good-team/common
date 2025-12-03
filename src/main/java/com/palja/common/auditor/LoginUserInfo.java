@@ -1,5 +1,7 @@
 package com.palja.common.auditor;
 
+import com.palja.common.vo.UserRole;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,6 @@ import lombok.Getter;
 public class LoginUserInfo {
 
 	private String loginId;
-	private String role;
+	private UserRole role;
 
 }

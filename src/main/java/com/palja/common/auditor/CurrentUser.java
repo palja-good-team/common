@@ -1,5 +1,7 @@
 package com.palja.common.auditor;
 
+import com.palja.common.vo.UserRole;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +12,7 @@ public class CurrentUser {
 		return AuditorContext.get().getLoginId();
 	}
 
-	public static String getRole() {
+	public static UserRole getRole() {
 		return AuditorContext.get().getRole();
 	}
 

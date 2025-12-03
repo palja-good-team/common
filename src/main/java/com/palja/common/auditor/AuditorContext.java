@@ -1,10 +1,12 @@
 package com.palja.common.auditor;
 
+import com.palja.common.vo.UserRole;
+
 public class AuditorContext {
 
 	private static final ThreadLocal<LoginUserInfo> threadLocal = new ThreadLocal<>();
 
-	public static void set(String loginId, String role) {
+	public static void set(String loginId, UserRole role) {
 		threadLocal.set(new LoginUserInfo(loginId, role));
 	}
 
