@@ -1,12 +1,11 @@
 package com.palja.common.entity;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.palja.common.auditor.AuditorContext;
 import com.palja.common.auditor.CurrentUser;
 
 import jakarta.persistence.Column;
@@ -23,20 +22,20 @@ public class BaseEntity {
 
 	@CreatedDate
 	@Column(name = "created_at", updatable = false)
-	private Instant createdAt;
+	private LocalDateTime createdAt;
 
 	@Column(name = "created_by", length = 10, updatable = false)
 	private String createdBy;
 
 	@LastModifiedDate
 	@Column(name = "updated_at")
-	private Instant updatedAt;
+	private LocalDateTime updatedAt;
 
 	@Column(name = "updated_by", length = 10)
 	private String updatedBy;
 
 	@Column(name = "deleted_at")
-	private Instant deletedAt;
+	private LocalDateTime deletedAt;
 
 	@Column(name = "deleted_by", length = 10)
 	private String deletedBy;
@@ -53,7 +52,7 @@ public class BaseEntity {
 	}
 
 	public void softDelete() {
-		this.deletedAt = Instant.now();
+		this.deletedAt = LocalDateTime.now();
 		this.deletedBy = CurrentUser.getLoginId();
 	}
 
