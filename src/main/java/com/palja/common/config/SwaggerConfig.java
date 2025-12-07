@@ -1,6 +1,7 @@
 package com.palja.common.config;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -11,35 +12,38 @@ import com.palja.common.annotation.RequiredAnonymous;
 import com.palja.common.annotation.RequiredRole;
 import com.palja.common.vo.UserRole;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
-@OpenAPIDefinition(
-	info = @Info(
-		title = "Palja",
-		description = "Palja Service의 REST API 명세서입니다.",
-		version = "v1.0.0"
-	)
-)
-@SecurityScheme(
-	name = "Authorization",
-	type = SecuritySchemeType.HTTP,
-	bearerFormat = "JWT",
-	scheme = "bearer",
-	in = SecuritySchemeIn.HEADER
-)
 @Configuration
 public class SwaggerConfig {
 
 	@Bean
 	public OpenAPI openAPI() {
 		return new OpenAPI()
-			.addServersItem(new Server().url("/"));
+			.components(new Components().addSecuritySchemes("Authorization",
+				new SecurityScheme()
+					.type(SecurityScheme.Type.HTTP)
+					.scheme("bearer")
+					.bearerFormat("JWT")
+					.in(SecurityScheme.In.HEADER)
+					.description("액세스 토큰을 입력해주세요.")
+			))
+			.addSecurityItem(new SecurityRequirement()
+				.addList("Authorization")
+			)
+			.servers(List.of(
+				new Server().url("http://localhost:8080")
+			))
+			.info(new Info()
+				.title("Palja")
+				.description("Palja Service의 REST API 명세서입니다.")
+				.version("v1.0.0")
+			);
 	}
 
 	@Bean
