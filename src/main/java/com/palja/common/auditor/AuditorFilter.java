@@ -17,6 +17,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuditorFilter extends OncePerRequestFilter {
 
+	private static final List<String> swaggerPaths = List.of(
+		"/swagger-ui",
+		"/v3/api-docs",
+		"/swagger-resources"
+	);
+
 	private final Map<String, List<String>> permitAllPaths = Map.of(
 		"/api/v1/auth/login", List.of("POST"),
 		"/api/v1/auth/refresh", List.of("POST"),
@@ -31,6 +37,11 @@ public class AuditorFilter extends OncePerRequestFilter {
 		try {
 			String path = request.getServletPath();
 			String method = request.getMethod();
+
+			if (swaggerPaths.stream().anyMatch(path::startsWith)) {
+				filterChain.doFilter(request, response);
+				return;
+			}
 
 			String loginId = request.getHeader("X-USER-LOGIN-ID");
 			String role = request.getHeader("X-USER-ROLE");
