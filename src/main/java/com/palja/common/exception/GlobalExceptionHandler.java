@@ -111,7 +111,7 @@ public class GlobalExceptionHandler {
 
 		return ResponseEntity
 			.badRequest()
-			.body(ApiResponse.error(CommonErrorCode.MISSING_REQUEST_HEADER, e.getMessage()));
+			.body(ApiResponse.error(CommonErrorCode.MISSING_REQUEST_HEADER));
 	}
 
 	/**
