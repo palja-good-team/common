@@ -1,8 +1,6 @@
 package com.palja.common.auditor;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,43 +15,18 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuditorFilter extends OncePerRequestFilter {
 
-	private static final List<String> swaggerPaths = List.of(
-		"/swagger-ui",
-		"/v3/api-docs",
-		"/swagger-resources"
-	);
-
-	private final Map<String, List<String>> permitAllPaths = Map.of(
-		"/api/v1/auth/login", List.of("POST"),
-		"/api/v1/auth/refresh", List.of("POST"),
-		"/api/v1/customers", List.of("POST"),
-		"/api/v1/company-users", List.of("POST")
-	);
-
 	@Override
 	protected void doFilterInternal(
 		HttpServletRequest request, HttpServletResponse response, FilterChain filterChain
 	) throws ServletException, IOException {
 		try {
-			String path = request.getServletPath();
-			String method = request.getMethod();
-
-			if (swaggerPaths.stream().anyMatch(path::startsWith)) {
-				filterChain.doFilter(request, response);
-				return;
-			}
-
 			String loginId = request.getHeader("X-USER-LOGIN-ID");
 			String role = request.getHeader("X-USER-ROLE");
 
-			if (loginId == null || role == null) {
-				if (permitAllPaths.containsKey(path) && permitAllPaths.get(path).contains(method)) {
-					filterChain.doFilter(request, response);
-					return;
-				}
+			if (loginId != null && role != null) {
+				AuditorContext.set(loginId, UserRole.valueOf(role));
 			}
 
-			AuditorContext.set(loginId, UserRole.valueOf(role));
 			filterChain.doFilter(request, response);
 		} finally {
 			AuditorContext.clear();
