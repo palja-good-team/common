@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -78,7 +79,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ApiResponse<?>> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
-		if ("X-User-Role".equalsIgnoreCase(e.getName())) {
+		if ("X-USER-ROLE".equalsIgnoreCase(e.getName())) {
 			return ResponseEntity
 				.status(CommonErrorCode.INVALID_HEADER_USER_ROLE.getHttpStatus())
 				.body(ApiResponse.error(CommonErrorCode.INVALID_HEADER_USER_ROLE, "value=" + e.getValue()));
@@ -99,6 +100,18 @@ public class GlobalExceptionHandler {
 		return ResponseEntity
 			.status(status)
 			.body(ApiResponse.error(CommonErrorCode.FEIGN_ERROR, e.getMessage()));
+	}
+
+	/**
+	 * 요청에 헤더가 존재하지 않을 때 예외 처리
+	 */
+	@ExceptionHandler(MissingRequestHeaderException.class)
+	public ResponseEntity<ApiResponse<Void>> handleMissingHeader(MissingRequestHeaderException e) {
+		log.error("Not found request header : {}",  e.getMessage());
+
+		return ResponseEntity
+			.badRequest()
+			.body(ApiResponse.error(CommonErrorCode.MISSING_REQUEST_HEADER, e.getMessage()));
 	}
 
 	/**

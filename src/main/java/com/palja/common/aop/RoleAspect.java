@@ -20,7 +20,13 @@ public class RoleAspect {
 
 	@Before("@annotation(requiredRole)")
 	public void requiredRole(RequiredRole requiredRole) {
-		UserRole role = AuditorContext.get().getRole();
+		LoginUserInfo loginUserInfo = AuditorContext.get();
+
+		if (loginUserInfo == null) {
+			throw new BusinessException(CommonErrorCode.FORBIDDEN);
+		}
+
+		UserRole role = loginUserInfo.getRole();
 
 		if (!Arrays.asList(requiredRole.value()).contains(role)) {
 			throw new BusinessException(CommonErrorCode.FORBIDDEN);
