@@ -15,6 +15,7 @@ public class FeignClientConfig {
 		return requestTemplate -> {
 			requestTemplate.header("X-USER-LOGIN-ID", AuditorContext.get().getLoginId());
 			requestTemplate.header("X-USER-ROLE", AuditorContext.get().getRole().name());
+			requestTemplate.header("X-INTERNAL-SECRET-KEY", System.getenv("INTERNAL_SECRET_KEY"));
 		};
 	}
 
