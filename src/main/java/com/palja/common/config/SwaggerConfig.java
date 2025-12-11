@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.palja.common.annotation.RequiredAnonymous;
+import com.palja.common.annotation.RequiredInternal;
 import com.palja.common.annotation.RequiredRole;
 import com.palja.common.vo.UserRole;
 
@@ -76,7 +77,12 @@ public class SwaggerConfig {
 				sb.append(" - ANONYMOUS");
 			}
 
-			if (requiredRole == null && requiredAnonymous == null) {
+			RequiredInternal requiredInternal = handlerMethod.getMethodAnnotation(RequiredInternal.class);
+			if(requiredInternal != null) {
+				sb.append("\uD83D\uDD12 외부에서 접근할 수 없습니다.");
+			}
+
+			if (requiredRole == null && requiredAnonymous == null && requiredInternal == null) {
 				sb.append("\uD83D\uDD13 권한이 필요하지 않습니다.");
 			}
 
