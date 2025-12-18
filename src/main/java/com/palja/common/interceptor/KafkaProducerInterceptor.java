@@ -25,7 +25,7 @@ public class KafkaProducerInterceptor<T> implements ProducerInterceptor<String, 
 
 		if (tracer.currentSpan() != null) {
 			producerRecord.headers().add("X-TRACE-ID", Objects.requireNonNull(tracer.currentSpan()).context().traceId().getBytes(StandardCharsets.UTF_8));
-			producerRecord.headers().add("X-SPAN-ID", Objects.requireNonNull(tracer.currentSpan()).context().traceId().getBytes(StandardCharsets.UTF_8));
+			producerRecord.headers().add("X-SPAN-ID", Objects.requireNonNull(tracer.currentSpan()).context().spanId().getBytes(StandardCharsets.UTF_8));
 		}
 
 		return producerRecord;
